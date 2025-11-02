@@ -1,4 +1,4 @@
-﻿Country,Risk index
+﻿Country,Risk_Index
 Japan,8.30
 Philippines,8.20
 Bangladesh,8.10
@@ -24,3 +24,4 @@ Brunei,2.90
 Bhutan,2.80
 Maldives,2.70
 Singapore,1.10
+
