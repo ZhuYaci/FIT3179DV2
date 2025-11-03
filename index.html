@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>FIT3179 DV2 — APAC Vulnerability & Temp Trends</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Vega libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","PingFang SC","Hiragino Sans GB",sans-serif; margin:0; color:#222; line-height:1.6;}
+    header,footer{padding:16px;border-bottom:1px solid #eee;background:#f9fafb}
+    footer{border-top:1px solid #eee;border-bottom:none}
+    .wrap{max-width:1160px;margin:0 auto;padding:16px}
+    .grid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media (min-width: 980px){ .grid{grid-template-columns:1.4fr 1fr} }
+    .card{background:#fff;border:1px solid #eee;border-radius:12px;padding:12px}
+    .vis{min-height:360px}
+    h1,h2{margin:.2rem 0 .5rem}
+    .muted{color:#555;font-size:.95rem}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>APAC Disaster Index and Vulnerability & Climate Trends</h1>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <section class="card">
+        <h2>Map</h2>
+        <div id="map" class="vis"></div>
+        <p class="muted">Tooltip includes Vulnerability and 2025 APAC Risk Index.</p>
+      </section>
+
+      <section class="card">
+        <h2>Line / Trend</h2>
+        <div id="line" class="vis"></div>
+        <p class="muted">Global trend series.(1880-2024)</p>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      Author: Zhu Yaci · Data: IMF CDIR (2013–2022), Statista (2025) · FIT3179 DV2
+    </div>
+  </footer>
+
+  <script>
+    const MAP_SPEC_URL  = "https://raw.githubusercontent.com/ZhuYaci/FIT3179DV2/refs/heads/main/visualization.vl_map.json";
+    const LINE_SPEC_URL = "https://raw.githubusercontent.com/ZhuYaci/FIT3179DV2/refs/heads/main/visualization.vl.json";
+
+    vegaEmbed("#map",  MAP_SPEC_URL,  {actions:false}).catch(e => console.error("Map error:", e));
+    vegaEmbed("#line", LINE_SPEC_URL, {actions:false}).catch(e => console.error("Line error:", e));
+  </script>
+</body>
+</html>
