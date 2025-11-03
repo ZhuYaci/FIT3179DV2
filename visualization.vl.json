@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 400,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ZhuYaci/FIT3179DV2/refs/heads/main/data/combie_land_ocean_cleaned.csv",
+    "format": {"type": "csv"}
+  },
+  "params": [
+    {
+      "name": "year_min",
+      "value": 1880,
+      "bind": {"input": "range", "min": 1880, "max": 2024, "step": 1}
+    },
+    {
+      "name": "year_max",
+      "value": 2024,
+      "bind": {"input": "range", "min": 1880, "max": 2024, "step": 1}
+    }
+  ],
+  "transform": [
+    {"calculate": "toNumber(datum.Year)", "as": "YearNum"},
+    {
+      "filter": "year(toDate(datum.Year)) >= year_min && year(toDate(datum.Year)) <= year_max"
+    },
+    {"fold": ["Land_Anomaly", "Ocean_Anomaly"], "as": ["Type", "Anomaly"]}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "strokeWidth": 1, "color": "grey"},
+      "encoding": {"y": {"datum": 0}}
+    },
+    {
+      "mark": {"type": "line"},
+      "encoding": {
+        "x": {"field": "Year", "type": "temporal", "title": "Year"},
+        "y": {
+          "field": "Anomaly",
+          "type": "quantitative",
+          "title": "Temperature Anomaly (°C)"
+        },
+        "color": {
+          "field": "Type",
+          "type": "nominal",
+          "title": "Category",
+          "scale": {
+            "domain": ["Land_Anomaly", "Ocean_Anomaly"],
+            "range": ["orange", "lightblue"]
+          },
+          "sort": ["Land_Anomaly", "Ocean_Anomaly"]
+        }
+      }
+    },
+    {
+      "mark": {"type": "point", "filled": true, "size": 50, "opacity": 0},
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "fields": ["Year"],
+            "encodings": ["x"],
+            "nearest": true,
+            "on": "mousemove",
+            "clear": "mouseout"
+          }
+        }
+      ],
+      "encoding": {
+        "x": {"field": "Year", "type": "temporal"},
+        "y": {"field": "Anomaly", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [
+        {"filter": {"param": "hover"}},
+        {"pivot": "Type", "value": "Anomaly", "groupby": ["Year"]}
+      ],
+      "mark": {"type": "rule"},
+      "encoding": {
+        "x": {"field": "Year", "type": "temporal"},
+        "color": {"value": "lightgrey"},
+        "tooltip": [
+          {"field": "Year", "type": "temporal", "title": "Year"},
+          {
+            "field": "Land_Anomaly",
+            "type": "quantitative",
+            "title": "Land Anomaly (°C)",
+            "format": ".3f"
+          },
+          {
+            "field": "Ocean_Anomaly",
+            "type": "quantitative",
+            "title": "Ocean Anomaly (°C)",
+            "format": ".3f"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {}
+}
